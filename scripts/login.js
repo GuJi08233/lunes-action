@@ -165,10 +165,22 @@ async function loginWithAccount(username, password, index) {
     await page.screenshot({ path: spBefore, fullPage: true });
 
     console.log(`[${username}] 提交登录...`);
-    await Promise.all([
-      page.waitForLoadState('networkidle', { timeout: 30_000 }).catch(() => {}),
-      loginBtn.click({ timeout: 10_000 })
-    ]);
+    
+    // 先点击登录按钮
+    await loginBtn.click({ timeout: 10_000 });
+    // 延长等待时间到120秒（2分钟），使用更可靠的等待方式
+    try {
+      // 修正：waitForURL 的第二个参数是选项对象
+      await page.waitForURL(url => !url.includes('/auth/login'), { 
+        timeout: 120_000,
+        waitUntil: 'networkidle'
+      });
+    } catch (e) {
+      console.log(`[${username}] 页面跳转等待超时，继续检查当前状态`);
+    }
+    // 额外等待3秒确保页面完全稳定
+    await page.waitForTimeout(3000);
+
 
     // 4) 判定是否登录成功
     const spAfter = screenshot('03-after-submit');
