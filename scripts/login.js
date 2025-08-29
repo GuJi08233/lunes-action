@@ -166,7 +166,7 @@ async function loginWithAccount(username, password, index) {
 
     console.log(`[${username}] 提交登录...`);
     await Promise.all([
-      page.waitForLoadState('networkidle', { timeout: 30_000 }).catch(() => {}),
+      page.waitForLoadState('networkidle', { timeout: 60_000 }).catch(() => {}),
       loginBtn.click({ timeout: 10_000 })
     ]);
 
