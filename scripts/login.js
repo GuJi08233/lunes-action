@@ -179,7 +179,7 @@ async function loginWithAccount(username, password, index) {
       console.log(`[${username}] 页面跳转等待超时，继续检查当前状态`);
     }
     // 额外等待3秒确保页面完全稳定
-    await page.waitForTimeout(3000);
+    await page.waitForTimeout(5000);
 
 
     // 4) 判定是否登录成功
